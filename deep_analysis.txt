@@ -1,0 +1,29 @@
+
+--- Laguna Honda Current Students ---
+Columns: [' Current Infant (Non-Mobile) 8', 'DOB', 'Enrollment Date', 'End Date', 'FT/PT', 'Unnamed: 5']
+No explicit ELFA columns found.
+FT/PT Unique: <StringArray>
+['FT', 'PT-WThF', 'PT-MWF', nan, 'FT/PT', 'PT- MWF', 'PT-TWTh', 'PT (M,T,W)']
+Length: 8, dtype: str
+Sample PT Row: {' Current Infant (Non-Mobile) 8': 'Ezra Rahim Merali', 'DOB': datetime.datetime(2025, 7, 3, 0, 0), 'Enrollment Date': datetime.datetime(2025, 10, 1, 0, 0), 'FT/PT': 'PT-WThF'}
+Potential Schedule columns: []
+
+--- Taraval Current Students ---
+Columns: ['Infant', 'DOB', 'Enrollment Date', 'End Date', 'Transition Dates', 'Notes', 'FT/PT']
+No explicit ELFA columns found.
+FT/PT Unique: <StringArray>
+['FT', 'PT- MTF', 'PT- MThF', nan, 'FT/PT', 'PT-MTTh', 'PT-MWF']
+Length: 7, dtype: str
+Sample PT Row: {'Infant': 'Kylan Lee', 'DOB': '4/23/2025', 'Enrollment Date': datetime.datetime(2025, 1, 11, 0, 0), 'Transition Dates': datetime.datetime(2026, 1, 11, 0, 0), 'Notes': 'Infant', 'FT/PT': 'PT- MTF'}
+Potential Schedule columns: []
+Sample Notes: ['Infant', 'Infant', 'Infant', 'Infant', 'Infant']
+
+--- Parent Contact Roster (Updated  ---
+Columns: ['first_name', 'last_name', 'enrollment_status', 'homeroom', 'parent_1_first_name', 'parent_1_last_name', 'parent_1_email', 'parent_1_mobile_phone', 'parent_1_phone_1', 'parent_1_phone_2', 'parent_2_first_name', 'parent_2_last_name', 'parent_2_email', 'parent_2_mobile_phone', 'parent_2_phone_1', 'parent_2_phone_2', 'parent_3_first_name', 'parent_3_last_name', 'parent_3_email']
+No explicit ELFA columns found.
+Potential Schedule columns: []
+
+--- Students - Parents ---
+Columns: ['First_name', 'last_name', 'enrollment_status', 'homeroom', 'parent_1_first_name', 'parent_1_last_name', 'parent_1_email', 'parent_2_first_name', 'parent_2_last_name', 'parent_2_email']
+No explicit ELFA columns found.
+Potential Schedule columns: []

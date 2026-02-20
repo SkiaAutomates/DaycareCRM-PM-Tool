@@ -1,0 +1,28 @@
+# Python dev scripts (internal use only)
+*.py
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment / secrets
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node (if any)
+node_modules/
+package-lock.json
+
+# PDF exports (generated files)
+*.pdf
+
+# Editor folders
+.vscode/
+.idea/
+
+# Logs
+*.log

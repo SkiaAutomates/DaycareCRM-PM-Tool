@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Care CRM</title>
+    <meta name="description" content="CRM for managing parents, students, enrollment, and classroom availability.">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="padding: 20px 15px;">
+                <div class="logo" style="display: flex; align-items: center; gap: 12px;">
+                    <img src="Daycare Logo.png" alt="Logo"
+                        style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;">
+                    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                        <span
+                            style="font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.1rem; color: white;">Day
+                            Care Operation</span>
+                        <span
+                            style="font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 0.8rem; color: rgba(255,255,255,0.9);">CRM
+                            & Account Management Portal</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="crm">
+                    <span class="nav-icon">👨‍👩‍👧‍👦</span>
+                    <span class="nav-text">CRM</span>
+                </button>
+                <button class="nav-item" data-tab="attendance">
+                    <span class="nav-icon">✋</span>
+                    <span class="nav-text">Attendance</span>
+                </button>
+                <button class="nav-item" data-tab="projects">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Projects</span>
+                </button>
+                <button class="nav-item" data-tab="availability">
+                    <span class="nav-icon">📅</span>
+                    <span class="nav-text">Availability</span>
+                </button>
+                <button class="nav-item" data-tab="notifications">
+                    <span class="nav-icon">🔔</span>
+                    <span class="nav-text">Notifications</span>
+                    <span class="notification-badge" id="notificationBadge"></span>
+                </button>
+                <button class="nav-item" data-tab="reports">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Reports</span>
+                </button>
+                <button class="nav-item" data-tab="help">
+                    <span class="nav-icon">❓</span>
+                    <span class="nav-text">Help & Instructions</span>
+                </button>
+                <button class="nav-item" data-tab="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="current-date" id="currentDate"></div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <section class="tab-content active" id="dashboard-tab">
+                <div class="tab-header">
+                    <h1>Dashboard</h1>
+                </div>
+                <div id="dashboardContent"></div>
+            </section>
+
+            <!-- CRM Tab -->
+            <section class="tab-content" id="crm-tab">
+                <div class="tab-header">
+                    <h1>CRM</h1>
+                    <div class="tab-actions">
+                        <button class="btn btn-primary" id="addParentBtn">+ Add Parent</button>
+                        <button class="btn btn-primary" id="addChildBtn">+ Add Child</button>
+                    </div>
+                </div>
+
+                <div class="filter-bar" style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
+                    <div style="position: relative; display: inline-block;">
+                        <input type="text" id="crmSearch" class="form-input"
+                            placeholder="Search by parent or child name..." onkeyup="CRM.render()"
+                            style="width: 300px; padding-right: 30px;">
+                        <button class="btn-icon" onclick="document.getElementById('crmSearch').value = ''; CRM.render()"
+                            style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: var(--neutral-500); background: none; border: none; cursor: pointer; padding: 2px; font-size: 1.2em; line-height: 1;">
+                            &times;
+                        </button>
+                    </div>
+
+                    <select id="statusFilter" class="form-select" onchange="CRM.render()" style="width: 150px;">
+                        <option value="">All Statuses</option>
+                        <option value="Enrolled">Enrolled</option>
+                        <option value="Waitlisted">Waitlisted</option>
+                        <option value="On Process">On Process</option>
+                        <option value="Drop-In">Drop-In</option>
+                    </select>
+
+                    <select id="locationFilter" class="form-select" onchange="CRM.render()" style="width: 150px;">
+                        <option value="">All Locations</option>
+                    </select>
+
+                    <select id="classroomFilter" class="form-select" onchange="CRM.render()" style="width: 150px;">
+                        <option value="">All Classrooms</option>
+                    </select>
+                </div>
+
+                <div id="crmContent"></div>
+            </section>
+
+            <!-- Attendance Tab -->
+            <section class="tab-content" id="attendance-tab">
+                <div class="tab-header">
+                    <h1 id="attendanceTabTitle">Daily Attendance</h1>
+                    <div class="tab-actions" id="attendanceDailyActions">
+                        <input type="date" id="attendanceDate" class="form-input" style="width: 200px;">
+                        <button class="btn btn-primary" id="markAllPresentBtn"
+                            onclick="Attendance.markAllPresent()">Mark All Present</button>
+                    </div>
+                    <div class="tab-actions" id="attendanceHistoryActions" style="display:none;">
+                        <button class="btn btn-secondary" onclick="Attendance.exportHistoryCSV()">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sub-tab nav -->
+                <div style="display:flex;gap:4px;border-bottom:2px solid var(--neutral-200);margin-bottom:20px;">
+                    <button id="att-sub-daily" onclick="Attendance.switchSubTab('daily')"
+                        style="border:none;background:transparent;padding:8px 18px;font-size:0.9em;font-weight:700;cursor:pointer;border-bottom:3px solid var(--primary-500);color:var(--primary-700);font-family:inherit;margin-bottom:-2px;">
+                        <i class="fas fa-clipboard-check"></i> Daily Attendance
+                    </button>
+                    <button id="att-sub-history" onclick="Attendance.switchSubTab('history')"
+                        style="border:none;background:transparent;padding:8px 18px;font-size:0.9em;font-weight:700;cursor:pointer;border-bottom:3px solid transparent;color:var(--neutral-500);font-family:inherit;margin-bottom:-2px;">
+                        <i class="fas fa-history"></i> Attendance History
+                    </button>
+                </div>
+
+                <!-- Daily panel -->
+                <div id="att-panel-daily">
+                    <div class="filter-bar"
+                        style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+                        <select id="attendanceLocationFilter" class="form-input" style="width: 250px;">
+                            <option value="">Select Location...</option>
+                        </select>
+                        <select id="attendanceClassroomFilter" class="form-input" style="width: 250px;">
+                            <option value="">Select Classroom...</option>
+                        </select>
+                        <!-- Show All toggle -->
+                        <label id="showAllToggleWrap"
+                            style="display:none; align-items:center; gap:8px; cursor:pointer; user-select:none; background:var(--neutral-100); border:1px solid var(--neutral-200); border-radius:20px; padding:6px 14px; font-size:0.85em; font-weight:600; color:var(--neutral-600); transition:all 0.2s;">
+                            <input type="checkbox" id="showAllEnrolled"
+                                onchange="Attendance.toggleShowAll(this.checked)"
+                                style="width:16px;height:16px;accent-color:var(--primary-500);cursor:pointer;">
+                            Show all enrolled
+                        </label>
+                    </div>
+                    <div id="attendanceContent">
+                        <div class="empty-state">
+                            <div class="empty-icon">✋</div>
+                            <h3>Select a Location and Classroom</h3>
+                            <p>Choose a classroom above to take attendance for today.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History panel -->
+                <div id="att-panel-history" style="display:none;">
+                    <div class="filter-bar"
+                        style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-end;">
+                        <div>
+                            <label
+                                style="display:block;font-size:0.8em;font-weight:600;color:var(--neutral-600);margin-bottom:4px;">Location</label>
+                            <select id="historyLocationFilter" class="form-input" style="width:220px;">
+                                <option value="">All Locations</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="display:block;font-size:0.8em;font-weight:600;color:var(--neutral-600);margin-bottom:4px;">Classroom</label>
+                            <select id="historyClassroomFilter" class="form-input" style="width:220px;">
+                                <option value="">All Classrooms</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="display:block;font-size:0.8em;font-weight:600;color:var(--neutral-600);margin-bottom:4px;">From</label>
+                            <input type="date" id="historyDateFrom" class="form-input" style="width:160px;">
+                        </div>
+                        <div>
+                            <label
+                                style="display:block;font-size:0.8em;font-weight:600;color:var(--neutral-600);margin-bottom:4px;">To</label>
+                            <input type="date" id="historyDateTo" class="form-input" style="width:160px;">
+                        </div>
+                        <button class="btn btn-primary" onclick="Attendance.loadHistory()" style="margin-bottom:1px;">
+                            <i class="fas fa-search"></i> View Records
+                        </button>
+                    </div>
+                    <div id="historyContent">
+                        <div class="empty-state">
+                            <div class="empty-icon">📅</div>
+                            <h3>Select a date range and click View Records</h3>
+                            <p>Filter by classroom and date range to see historical attendance.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Tab -->
+            <section class="tab-content" id="projects-tab">
+                <div class="tab-header">
+                    <h1>Projects</h1>
+                    <div class="tab-actions">
+                        <button class="btn btn-primary" id="addProjectBtn">+ New Project</button>
+                    </div>
+                </div>
+                <div id="projectsContent"></div>
+            </section>
+
+            <!-- Availability Tab -->
+            <section class="tab-content" id="availability-tab">
+                <div class="tab-header">
+                    <h1>Classroom Availability</h1>
+                    <div class="tab-actions">
+                        <!-- Month navigator moved to Drop-In table -->
+                    </div>
+                </div>
+                <div id="availabilityContent"></div>
+            </section>
+
+            <!-- Notifications Tab -->
+            <section class="tab-content" id="notifications-tab">
+                <div class="tab-header">
+                    <h1>Notifications</h1>
+                    <div class="tab-actions">
+                        <button class="btn btn-secondary" id="markAllReadBtn">Mark All Read</button>
+                    </div>
+                </div>
+                <div id="notificationsContent"></div>
+            </section>
+
+            <!-- Reports Tab -->
+            <section class="tab-content" id="reports-tab">
+                <div class="tab-header">
+                    <h1>Weekly Report</h1>
+                    <div class="tab-actions">
+                        <button class="btn btn-primary" id="exportPdfBtn">📄 Export PDF</button>
+                    </div>
+                </div>
+                <div id="reportsContent"></div>
+            </section>
+
+            <!-- Settings Tab -->
+            <section class="tab-content" id="settings-tab">
+                <div class="tab-header">
+                    <h1>Settings</h1>
+                </div>
+                <div id="settingsContent"></div>
+            </section>
+
+            <!-- Help Tab -->
+            <section class="tab-content" id="help-tab">
+                <div class="tab-header">
+                    <h1>Help & Instructions</h1>
+                </div>
+                <div id="helpContent"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Container -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/import_payload.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/crm.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/availability.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/help.js"></script>
+    <script src="js/attendance.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- CRM Search Clear Button -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('crmSearch');
+            const clearBtn = document.getElementById('clearSearchBtn');
+
+            if (searchInput && clearBtn) {
+                // Show/hide clear button based on input value
+                searchInput.addEventListener('input', function () {
+                    clearBtn.style.display = this.value ? 'flex' : 'none';
+                });
+
+                // Clear search when button is clicked
+                clearBtn.addEventListener('click', function () {
+                    searchInput.value = '';
+                    clearBtn.style.display = 'none';
+                    CRM.render(); // Refresh CRM view
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Import Logic handled in App.setupImportButton
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — Day Care Operation CRM</title>
+    <meta name="description"
+        content="Simple, transparent pricing for your day care management platform. Start your free 5-day trial today.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #2d7d46;
+            --primary-light: #3a9457;
+            --primary-pale: #e8f5ec;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --text-dark: #1a2e1e;
+            --text-mid: #4a5568;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --white: #ffffff;
+            --bg: #f7faf8;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.10);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.14);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* =================== NAV =================== */
+        .nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-brand-text {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .nav-cta:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        /* =================== HERO =================== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #e8f5ec 0%, #fff9e6 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(45, 125, 70, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-light);
+            color: #92400e;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 1px solid #fde68a;
+        }
+
+        .hero h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-mid);
+            max-width: 560px;
+            margin: 0 auto 10px;
+            line-height: 1.7;
+        }
+
+        .hero-trial-note {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        .hero-trial-note strong {
+            color: var(--primary);
+        }
+
+        /* =================== PLANS =================== */
+        .section {
+            padding: 60px 20px;
+        }
+
+        .section-center {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            align-items: start;
+        }
+
+        .plan-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s;
+            position: relative;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .plan-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.03);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .plan-card.featured:hover {
+            transform: scale(1.03) translateY(-4px);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-header {
+            padding: 32px 32px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .plan-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+
+        .icon-starter {
+            background: #eff6ff;
+        }
+
+        .icon-professional {
+            background: var(--primary-pale);
+        }
+
+        .icon-growth {
+            background: #fef3c7;
+        }
+
+        .plan-name {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .plan-tagline {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .price-dollar {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-mid);
+            margin-top: 4px;
+        }
+
+        .price-amount {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .price-amount.featured-price {
+            color: var(--primary);
+        }
+
+        .price-per {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-left: 4px;
+        }
+
+        .price-note {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        .plan-body {
+            padding: 28px 32px 32px;
+        }
+
+        .plan-limits {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .limit-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-mid);
+        }
+
+        .limit-chip i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        .features-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-light);
+            margin-bottom: 14px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: var(--text-mid);
+            line-height: 1.4;
+        }
+
+        .feature-list li i {
+            color: var(--primary);
+            margin-top: 2px;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+
+        .feature-list li.dim {
+            color: var(--text-light);
+        }
+
+        .feature-list li.dim i {
+            color: #cbd5e0;
+        }
+
+        .plan-cta-btn {
+            display: block;
+            width: 100%;
+            margin-top: 28px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+            border: 2px solid transparent;
+        }
+
+        .btn-outline {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-pale);
+        }
+
+        .btn-filled {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-filled:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(45, 125, 70, 0.35);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #f97316);
+            color: white;
+            border-color: transparent;
+        }
+
+        .btn-accent:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.40);
+        }
+
+        /* =================== TRIAL BANNER =================== */
+        .trial-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a5c2e 100%);
+            border-radius: var(--radius);
+            padding: 36px 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 0 20px 60px;
+            color: white;
+            max-width: 1100px;
+            margin: 0 auto 60px;
+        }
+
+        .trial-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+
+        .trial-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .trial-text h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .trial-text p {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+
+        .trial-cta {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .trial-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        /* =================== FEATURE TABLE =================== */
+        .compare-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .compare-title h2 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .compare-title p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .compare-table th {
+            background: var(--primary);
+            color: white;
+            padding: 16px 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .compare-table th:first-child {
+            text-align: left;
+            background: #1e5e30;
+        }
+
+        .compare-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-mid);
+            text-align: center;
+        }
+
+        .compare-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .compare-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .compare-table tr:nth-child(even) {
+            background: var(--bg);
+        }
+
+        .compare-table .cat-row td {
+            background: #f0faf4;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .check {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .dash {
+            color: #cbd5e0;
+        }
+
+        .highlight-col {
+            background: rgba(45, 125, 70, 0.04);
+        }
+
+        /* =================== FAQ =================== */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 20px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .faq-item h4 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .faq-item p {
+            font-size: 0.9rem;
+            color: var(--text-mid);
+            line-height: 1.6;
+        }
+
+        /* =================== FOOTER =================== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--text-dark);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        .section-title {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <img src="Daycare Logo.png" alt="Logo">
+            <div>
+                <div class="nav-brand-text">Day Care Operation</div>
+                <div class="nav-brand-sub">CRM & Account Management Portal</div>
+            </div>
+        </a>
+        <a href="index.html" class="nav-cta">Log In</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge"><i class="fas fa-star"></i> Trusted by Day Care Professionals</div>
+        <h1>Simple pricing for <span>growing day cares</span></h1>
+        <p>Everything you need to manage enrollment, attendance, families, and classrooms — in one place.</p>
+        <p class="hero-trial-note"><strong>5-day free trial</strong> on any plan. No credit card required.</p>
+    </section>
+
+    <!-- PLANS -->
+    <section class="section">
+        <div class="section-center">
+            <div class="plans-grid">
+
+                <!-- STARTER -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon icon-starter"><i class="fas fa-seedling" style="color:#3b82f6;"></i></div>
+                        <div class="plan-name">Starter</div>
+                        <div class="plan-tagline">Perfect for single-location day cares getting organized.</div>
+                        <div class="plan-price">
+                            <span class="price-dollar">$</span>
+                            <span class="price-amount">59</span>
+                            <span class="price-per">/month</span>
+                        </div>
+                        <div class="price-note">Billed monthly. Cancel anytime.</div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-limits">
+                            <div class="limit-chip"><i class="fas fa-map-marker-alt"></i> 1 Location</div>
+                            <div class="limit-chip"><i class="fas fa-door-open"></i> 3 Classrooms</div>
+                            <div class="limit-chip"><i class="fas fa-users"></i> 2 Staff Users</div>
+                        </div>
+                        <div class="features-label">Included Features</div>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Parent & Child CRM</li>
+                            <li><i class="fas fa-check"></i> Daily Attendance Tracking</li>
+                            <li><i class="fas fa-check"></i> Enrollment Dashboard</li>
+                            <li><i class="fas fa-check"></i> Classroom Availability</li>
+                            <li><i class="fas fa-check"></i> Enrollment Projects & Pipelines</li>
+                            <li class="dim"><i class="fas fa-times"></i> Reports (Starter does not include)</li>
+                            <li class="dim"><i class="fas fa-times"></i> Smart Notifications</li>
+                        </ul>
+                        <a href="index.html" class="plan-cta-btn btn-outline">Start Free Trial</a>
+                    </div>
+                </div>
+
+                <!-- PROFESSIONAL (FEATURED) -->
+                <div class="plan-card featured">
+                    <div class="plan-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <div class="plan-icon icon-professional"><i class="fas fa-building"
+                                style="color: var(--primary);"></i></div>
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-tagline">The complete toolkit for established day care operations.</div>
+                        <div class="plan-price">
+                            <span class="price-dollar">$</span>
+                            <span class="price-amount featured-price">99</span>
+                            <span class="price-per">/month</span>
+                        </div>
+                        <div class="price-note">Billed monthly. Cancel anytime.</div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-limits">
+                            <div class="limit-chip"><i class="fas fa-map-marker-alt"></i> 3 Locations</div>
+                            <div class="limit-chip"><i class="fas fa-door-open"></i> Unlimited Classrooms</div>
+                            <div class="limit-chip"><i class="fas fa-users"></i> 5 Staff Users</div>
+                        </div>
+                        <div class="features-label">Everything in Starter, plus:</div>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Full Reports Suite</li>
+                            <li><i class="fas fa-check"></i> Smart Notifications & Alerts</li>
+                            <li><i class="fas fa-check"></i> Service Agreement Tracking</li>
+                            <li><i class="fas fa-check"></i> Waitlist Management</li>
+                            <li><i class="fas fa-check"></i> Onboarding / Offboarding Pipelines</li>
+                            <li><i class="fas fa-check"></i> Monthly Capacity Overrides</li>
+                            <li><i class="fas fa-check"></i> Availability Forecasting</li>
+                        </ul>
+                        <a href="index.html" class="plan-cta-btn btn-filled">Start Free Trial</a>
+                    </div>
+                </div>
+
+                <!-- GROWTH -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon icon-growth"><i class="fas fa-chart-line" style="color:#d97706;"></i>
+                        </div>
+                        <div class="plan-name">Growth</div>
+                        <div class="plan-tagline">Scale across multiple facilities with your whole team.</div>
+                        <div class="plan-price">
+                            <span class="price-dollar">$</span>
+                            <span class="price-amount">149</span>
+                            <span class="price-per">/month</span>
+                        </div>
+                        <div class="price-note">Billed monthly. Cancel anytime.</div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-limits">
+                            <div class="limit-chip"><i class="fas fa-map-marker-alt"></i> Unlimited Locations</div>
+                            <div class="limit-chip"><i class="fas fa-users"></i> Unlimited Users</div>
+                        </div>
+                        <div class="features-label">Everything in Professional, plus:</div>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Unlimited Staff Accounts</li>
+                            <li><i class="fas fa-check"></i> Priority Email Support</li>
+                            <li><i class="fas fa-check"></i> Data Export (CSV)</li>
+                            <li><i class="fas fa-check"></i> Dedicated Onboarding Call</li>
+                            <li><i class="fas fa-check"></i> Early Access to New Features</li>
+                            <li><i class="fas fa-check"></i> Custom Branding Options</li>
+                        </ul>
+                        <a href="index.html" class="plan-cta-btn btn-accent">Start Free Trial</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TRIAL BANNER -->
+    <section style="padding: 0 20px 60px;">
+        <div class="trial-banner">
+            <div class="trial-icon">🎯</div>
+            <div class="trial-text">
+                <h3>Try it free for 5 days — no credit card needed</h3>
+                <p>Contact us to get a personal demo walkthrough, or jump straight in with a 5-day Temporary Access link
+                    we'll send you. See exactly how it fits your workflow.</p>
+            </div>
+            <a href="index.html" class="trial-cta">Request Demo Access</a>
+        </div>
+    </section>
+
+    <!-- COMPARE TABLE -->
+    <section class="section" style="background: white; padding-top: 60px; padding-bottom: 60px;">
+        <div class="section-center">
+            <div class="compare-title">
+                <h2>Feature Comparison</h2>
+                <p>Every detail side-by-side so you can choose with confidence.</p>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Starter<br><span style="font-size: 0.8rem; font-weight: 500; opacity: 0.85;">$59/mo</span>
+                        </th>
+                        <th style="background: #1e6e35;">Professional<br><span
+                                style="font-size: 0.8rem; font-weight: 500; opacity: 0.85;">$99/mo</span></th>
+                        <th>Growth<br><span style="font-size: 0.8rem; font-weight: 500; opacity: 0.85;">$149/mo</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cat-row">
+                        <td colspan="4">Locations & Classrooms</td>
+                    </tr>
+                    <tr>
+                        <td>Day Care Locations</td>
+                        <td>1</td>
+                        <td class="highlight-col">Up to 3</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Classrooms</td>
+                        <td>3</td>
+                        <td class="highlight-col">Unlimited</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Capacity Overrides</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+
+                    <tr class="cat-row">
+                        <td colspan="4">Family & Student Management</td>
+                    </tr>
+                    <tr>
+                        <td>Parent Profiles & Notes</td>
+                        <td class="check">✓</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Child Profiles & Enrollment</td>
+                        <td class="check">✓</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Service Agreement Tracking</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Waitlist Management</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+
+                    <tr class="cat-row">
+                        <td colspan="4">Operations</td>
+                    </tr>
+                    <tr>
+                        <td>Daily Attendance</td>
+                        <td class="check">✓</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Enrollment Dashboard</td>
+                        <td class="check">✓</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Availability Forecasting</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Projects (Tours, Playdates, etc.)</td>
+                        <td class="check">✓</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Onboarding / Offboarding Pipelines</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+
+                    <tr class="cat-row">
+                        <td colspan="4">Reporting & Notifications</td>
+                    </tr>
+                    <tr>
+                        <td>Reports Suite</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Smart Notifications & Alerts</td>
+                        <td class="dash">—</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Data Export (CSV)</td>
+                        <td class="dash">—</td>
+                        <td class="dash highlight-col">—</td>
+                        <td class="check">✓</td>
+                    </tr>
+
+                    <tr class="cat-row">
+                        <td colspan="4">Team & Support</td>
+                    </tr>
+                    <tr>
+                        <td>Staff User Accounts</td>
+                        <td>2 users</td>
+                        <td class="highlight-col">5 users</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Role-Based Access Control</td>
+                        <td class="check">✓</td>
+                        <td class="check highlight-col">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Priority Support</td>
+                        <td class="dash">—</td>
+                        <td class="dash highlight-col">—</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Dedicated Onboarding Call</td>
+                        <td class="dash">—</td>
+                        <td class="dash highlight-col">—</td>
+                        <td class="check">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+        <div class="section-center">
+            <div class="compare-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know before getting started.</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Do I need a credit card for the trial?</h4>
+                    <p>No. Your 5-day trial requires no payment information. Just contact us and we'll set you up with
+                        your own access link right away.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can I switch plans later?</h4>
+                    <p>Absolutely. You can upgrade or downgrade your plan at any time. Changes take effect at the start
+                        of your next billing cycle.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Is my data secure?</h4>
+                    <p>Yes. All your data is stored securely in a cloud database with encrypted connections. We never
+                        share your data with third parties.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How many children can I manage?</h4>
+                    <p>There is no limit on the number of children or parents you can add to the system on any plan.
+                        Limits only apply to staff accounts and locations.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>What payment methods do you accept?</h4>
+                    <p>We accept all major credit cards. Annual billing options (with a discount!) are available —
+                        contact us for details.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>What happens if I cancel?</h4>
+                    <p>You can cancel anytime with no penalty. Your account will remain active until the end of your
+                        billing period, after which your data will be securely archived for 30 days.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 Day Care Operation CRM. All rights reserved. &nbsp;|&nbsp; <a href="index.html">Log In</a></p>
+    </footer>
+
+</body>
+
+</html>

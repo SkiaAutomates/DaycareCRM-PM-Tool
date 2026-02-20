@@ -1,0 +1,22 @@
+
+--- Found 'ELFA' in Sheet: Laguna Honda Current Students ---
+Column 'Unnamed: 5':
+  Row 4 (Unknown): ELFA
+  Row 5 (Unknown): ELFA 
+  Row 6 (Unknown): ELFA 
+  Row 7 (Unknown): ELFA 
+  Row 34 (Unknown): ELFA
+
+--- Found 'ELFA' in Sheet: Students - Parents ---
+Column 'enrollment_status':
+  Row 7 (Jacob): ELFA Student
+  Row 8 (Emma): ELFA Student
+  Row 9 (George
+): ELFA Student
+  Row 32 (Yuritzi): ELFA Student
+
+--- Found 'ELFA' in Sheet: 2026 Tuition Increase Tracker ---
+Column 'Notes':
+  Row 28 (Yuritzi Chapman-Ruiz): They are ELFA student and don't pay monthly tuition to us. We can exclude them
+Column 'Unnamed: 24':
+  Row 3 (George McKee): ELFA One Time Registration Fee - ALL AGE GROUPS | Per Kid
