@@ -1,6 +1,6 @@
-# Meaningful Beginnings CRM
+﻿# Day Care CRM
 
-A comprehensive CRM web application for managing childcare enrollment at Meaningful Beginnings centers.
+A comprehensive CRM web application for managing childcare enrollment at Day Care Operation centers.
 
 ## Features
 
@@ -64,9 +64,9 @@ SUPABASE_ANON_KEY=your-anon-key
 
 ## Locations
 
-- **Laguna Honda** - 5 classrooms (Infant to Upper Preschool)
-- **Taraval** - 2 classrooms (Infant and Toddler)
+- **Day Care Location 1** - 5 classrooms (Infant to Upper Preschool)
+- **Day Care Location 2** - 2 classrooms (Infant and Toddler)
 
 ## License
 
-Private - Meaningful Beginnings © 2026
+Private - Day Care Operation © 2026

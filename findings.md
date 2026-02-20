@@ -1,9 +1,9 @@
-# Findings & Research
+﻿# Findings & Research
 
 ## Discovery Answers
 
 ### 1. North Star
-Create a comprehensive CRM for "Meaningful Beginnings" childcare centers to manage:
+Create a comprehensive CRM for "Day Care Operation" childcare centers to manage:
 - Parent and student data with reporting
 - Dashboard with student counts per classroom/location
 - Search by parent or child name
@@ -33,7 +33,7 @@ Real-time updates within the CRM Web App.
 
 ## Locations & Classrooms
 
-### Laguna Honda (5 Classrooms)
+### Day Care Location 1 (5 Classrooms)
 | Classroom | Age Range | Max Capacity |
 |-----------|-----------|--------------|
 | Silly Starfish (Infant Non-Mobile) | 6 weeks - 12 months | 8 |
@@ -42,7 +42,7 @@ Real-time updates within the CRM Web App.
 | One-of-a-Kind Otters (Lower Preschool) | 30 - 42 months | 20 |
 | Dancing Dolphins/Wonderful Whales (Upper Preschool) | 42 - 72 months | 20 |
 
-### Taraval (2 Classrooms)
+### Day Care Location 2 (2 Classrooms)
 | Classroom | Age Range | Max Capacity |
 |-----------|-----------|--------------|
 | Infant Room | 6 weeks - 18 months | 16 |

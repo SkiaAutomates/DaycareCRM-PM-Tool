@@ -1,4 +1,4 @@
-# Project Constitution (gemini.md)
+﻿# Project Constitution (gemini.md)
 
 ## 1. Data Schemas
 
@@ -25,7 +25,7 @@
   "lastName": "string",
   "dateOfBirth": "YYYY-MM-DD",
   "status": "Enrolled | Waitlisted | On Process | Drop-In",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "classroomId": "string",
   "parentIds": ["string (UUID)"],
   "lastTransitionDate": "YYYY-MM-DD | null",
@@ -45,7 +45,7 @@
   "childId": "string (UUID)",
   "expectedDeliveryDate": "YYYY-MM-DD | null",
   "desiredStartDate": "YYYY-MM-DD",
-  "preferredLocation": "Taraval | Laguna Honda",
+  "preferredLocation": "Day Care Location 2 | Day Care Location 1",
   "scheduleType": "Regular | Full Time | Part Time | Drop-Ins",
   "createdAt": "ISO 8601"
 }
@@ -56,7 +56,7 @@
 {
   "id": "string",
   "name": "string",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "ageCategory": "Infant Non-Mobile | Infant Mobile | Infant | Toddler | Lower Preschool | Upper Preschool",
   "ageRangeMonths": { "min": "number", "max": "number" },
   "maxCapacity": "number"
@@ -69,7 +69,7 @@
   "id": "string (UUID)",
   "parentId": "string (UUID)",
   "childId": "string (UUID) | null",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "scheduledDate": "YYYY-MM-DD",
   "scheduledTime": "HH:MM",
   "status": "Scheduled | Completed | Rescheduled | Cancelled",
@@ -86,7 +86,7 @@
   "type": "Enrollment Inquiry | Transition",
   "parentIds": ["string (UUID)"],
   "childId": "string (UUID)",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "transitionCategory": "Infant Non-Mobile to Infant Mobile | Infant Mobile to Toddler | Toddler to Lower Preschool | Lower Preschool to Upper Preschool | null",
   "tasks": [
     {
@@ -107,7 +107,7 @@
 {
   "id": "string (UUID)",
   "childId": "string (UUID)",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "status": "Sent | Signed | Followed-up",
   "sentDate": "YYYY-MM-DD",
   "signedDate": "YYYY-MM-DD | null",
@@ -120,7 +120,7 @@
 {
   "id": "string (UUID)",
   "childId": "string (UUID)",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "category": "string",
   "date": "YYYY-MM-DD",
   "status": "Upcoming | Completed"
@@ -133,7 +133,7 @@
   "id": "string (UUID)",
   "childId": "string (UUID)",
   "type": "Onboarding | Offboarding",
-  "location": "Taraval | Laguna Honda",
+  "location": "Day Care Location 2 | Day Care Location 1",
   "category": "string",
   "date": "YYYY-MM-DD",
   "reason": "string | null"
@@ -207,7 +207,7 @@
 
 ## 4. Classroom Configuration
 
-### Laguna Honda
+### Day Care Location 1
 | ID | Name | Age Category | Age Range (months) | Capacity |
 |----|------|--------------|-------------------|----------|
 | lh-infant-nm | Silly Starfish | Infant Non-Mobile | 1.5 - 12 | 8 |
@@ -216,7 +216,7 @@
 | lh-lower-ps | One-of-a-Kind Otters | Lower Preschool | 30 - 42 | 20 |
 | lh-upper-ps | Dancing Dolphins/Wonderful Whales | Upper Preschool | 42 - 72 | 20 |
 
-### Taraval
+### Day Care Location 2
 | ID | Name | Age Category | Age Range (months) | Capacity |
 |----|------|--------------|-------------------|----------|
 | tv-infant | Infant Room | Infant | 1.5 - 18 | 16 |

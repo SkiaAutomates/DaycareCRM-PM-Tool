@@ -1,4 +1,4 @@
-# Meaningful Beginnings CRM
+﻿# Day Care CRM
 
 ## Product Documentation
 
@@ -21,7 +21,7 @@
 
 ## Overview
 
-**Meaningful Beginnings CRM** is a web-based customer relationship management system specifically designed for childcare centers. It streamlines enrollment tracking, classroom management, parent communications, and staff workflows.
+**Day Care CRM** is a web-based customer relationship management system specifically designed for childcare centers. It streamlines enrollment tracking, classroom management, parent communications, and staff workflows.
 
 ### Key Benefits
 
@@ -42,7 +42,7 @@ The main dashboard provides an at-a-glance view of your center's status:
 | Metric | Description |
 |--------|-------------|
 | Total Enrolled | Current children enrolled across all locations |
-| Location Breakdown | Children count per location (Laguna Honda, Taraval) |
+| Location Breakdown | Children count per location (Day Care Location 1, Day Care Location 2) |
 | Waitlist Count | Families waiting for an opening |
 | Active Projects | Enrollment inquiries and transitions in progress |
 | This Week's Tours | Scheduled facility tours |
@@ -102,13 +102,13 @@ Two workflow types for tracking enrollment activities:
 ### 4. Classroom Availability
 
 - **Monthly Calendar View** - Navigate between months
-- **Location Tabs** - Switch between Laguna Honda and Taraval
+- **Location Tabs** - Switch between Day Care Location 1 and Day Care Location 2
 - **Capacity Visualization** - See available spots per classroom
 - **Age Range Display** - Each classroom shows accepted age range
 
 #### Classroom Configuration
 
-**Laguna Honda:**
+**Day Care Location 1:**
 | Classroom | Age Range | Capacity |
 |-----------|-----------|----------|
 | Silly Starfish | 1.5 - 12 months | 8 |
@@ -117,7 +117,7 @@ Two workflow types for tracking enrollment activities:
 | One-of-a-Kind Otters | 30 - 42 months | 20 |
 | Dancing Dolphins/Wonderful Whales | 42 - 72 months | 20 |
 
-**Taraval:**
+**Day Care Location 2:**
 | Classroom | Age Range | Capacity |
 |-----------|-----------|----------|
 | Infant Room | 1.5 - 18 months | 16 |
@@ -187,7 +187,7 @@ Generate comprehensive weekly summaries including:
 ### Viewing Classroom Availability
 
 1. Go to **Availability** tab
-2. Select location tab (Laguna Honda or Taraval)
+2. Select location tab (Day Care Location 1 or Day Care Location 2)
 3. Use arrows to navigate months
 4. View capacity bars for each classroom
 
@@ -307,4 +307,4 @@ For technical support or feature requests, contact:
 
 ---
 
-*© 2026 Meaningful Beginnings. All rights reserved.*
+*© 2026 Day Care Operation. All rights reserved.*

@@ -1,4 +1,4 @@
--- Meaningful Beginnings CRM - Database Schema
+﻿-- Day Care CRM - Database Schema
 -- Run this in Supabase SQL Editor (SQL Editor tab)
 
 -- Enable UUID generation
