@@ -153,7 +153,7 @@ Generate comprehensive weekly summaries including:
 
 ### First-Time Login
 
-1. Navigate to [https://mb-crm-report-web-base-app.vercel.app](https://mb-crm-report-web-base-app.vercel.app)
+1. Navigate to [https://daycare-crm-pm-tool.vercel.app](https://daycare-crm-pm-tool.vercel.app)
 2. Click **Create Account**
 3. Enter your `@meaningfulbeginnings.org` email
 4. Create a password (minimum 6 characters)

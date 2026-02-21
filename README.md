@@ -1,5 +1,7 @@
 ﻿# Day Care CRM
 
+**Live Demo: [daycare-crm-pm-tool.vercel.app](https://daycare-crm-pm-tool.vercel.app)**
+
 A comprehensive CRM web application for managing childcare enrollment at Day Care Operation centers.
 
 ## Features
