@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — Day Care Operation CRM</title>
+    <meta name="description" content="Terms of Service for Day Care Operation CRM. Read our terms and conditions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #2d7d46;
+            --primary-light: #3a9457;
+            --primary-pale: #e8f5ec;
+            --text-dark: #1a2e1e;
+            --text-mid: #4a5568;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --white: #ffffff;
+            --bg: #f7faf8;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.10);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Nav */
+        .nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-brand-text {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .nav-brand-sub {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-mid);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Banner */
+        .hero-mini {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #e8f5ec 0%, #fff9e6 100%);
+        }
+
+        .hero-mini h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .hero-mini p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            margin-top: 8px;
+        }
+
+        /* Content */
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        .legal-container h2 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 36px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-pale);
+        }
+
+        .legal-container h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .legal-container p,
+        .legal-container li {
+            color: var(--text-mid);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .legal-container ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .legal-container li {
+            margin-bottom: 6px;
+        }
+
+        .effective-date {
+            display: inline-block;
+            background: var(--primary-pale);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .nav {
+                padding: 0 16px;
+            }
+
+            .hero-mini h1 {
+                font-size: 1.8rem;
+            }
+
+            .legal-container {
+                padding: 32px 16px 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV -->
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">
+            <img src="Daycare Logo.png" alt="Day Care CRM Logo">
+            <div>
+                <div class="nav-brand-text">Day Care CRM</div>
+                <div class="nav-brand-sub">Operation Management</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="pricing.html">Pricing</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="index.html">Log In</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-mini">
+        <h1>Terms of Service</h1>
+        <p>Please read these terms carefully before using Day Care CRM.</p>
+    </section>
+
+    <!-- CONTENT -->
+    <div class="legal-container">
+        <span class="effective-date">Effective Date: February 21, 2026</span>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using Day Care Operation CRM ("the Service"), you agree to be bound by these Terms of
+            Service. If you do not agree to these terms, you may not use the Service.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>Day Care Operation CRM is a cloud-based software-as-a-service (SaaS) platform designed to help day care
+            operators manage enrollment, attendance, family records, and operational workflows. The Service is provided
+            on a subscription basis and is powered by <strong><a href="https://automatedsolutionz.com" target="_blank"
+                    style="color: var(--primary);">Skia Automated Solutions</a></strong> (automatedsolutionz.com).</p>
+
+        <h2>3. Account Registration</h2>
+        <ul>
+            <li>You must provide accurate and complete information when creating an account.</li>
+            <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
+            <li>You must be at least 18 years old to create an account.</li>
+            <li>You are responsible for all activities that occur under your account.</li>
+        </ul>
+
+        <h2>4. Subscriptions & Payments</h2>
+        <ul>
+            <li>The Service is offered through paid subscription plans (Starter, Professional, Growth).</li>
+            <li>Payments are processed by <strong>Paddle.com</strong>, our Merchant of Record. Paddle handles all
+                billing, taxes, and payment processing on our behalf.</li>
+            <li>Subscriptions renew automatically at the end of each billing cycle unless cancelled.</li>
+            <li>Prices are subject to change with 30 days' prior notice.</li>
+        </ul>
+
+        <h2>5. Free Trial</h2>
+        <p>We may offer a free trial period. At the end of the trial, your account will require an active subscription
+            to continue using the Service. No payment information is required to start a trial.</p>
+
+        <h2>6. Cancellation & Refunds</h2>
+        <ul>
+            <li>You may cancel your subscription at any time through your account settings or by contacting us.</li>
+            <li>Upon cancellation, your access continues until the end of the current billing period.</li>
+            <li>Refunds are handled on a case-by-case basis. Contact us at <strong>skia@automatedsolutionz.com</strong>
+                for
+                refund requests.</li>
+            <li>After your subscription ends, your data will be securely archived for 30 days before permanent deletion.
+            </li>
+        </ul>
+
+        <h2>7. Data Ownership & Privacy</h2>
+        <ul>
+            <li>You retain full ownership of all data you enter into the Service.</li>
+            <li>We do not sell, share, or distribute your data to third parties.</li>
+            <li>Your data is isolated from other organizations using Row Level Security.</li>
+            <li>For full details on data handling, see our <a href="privacy.html" style="color: var(--primary);">Privacy
+                    Policy</a>.</li>
+        </ul>
+
+        <h2>8. Acceptable Use</h2>
+        <p>You agree not to:</p>
+        <ul>
+            <li>Use the Service for any unlawful purpose.</li>
+            <li>Attempt to gain unauthorized access to other users' data or accounts.</li>
+            <li>Reverse engineer, decompile, or disassemble any part of the Service.</li>
+            <li>Upload malicious code, viruses, or harmful content.</li>
+            <li>Resell, sublicense, or redistribute access to the Service without written permission.</li>
+        </ul>
+
+        <h2>9. Service Availability</h2>
+        <p>We strive to maintain 99.9% uptime but do not guarantee uninterrupted access. The Service may be temporarily
+            unavailable for maintenance, updates, or circumstances beyond our control. We will provide reasonable notice
+            for planned downtime.</p>
+
+        <h2>10. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law, Day Care CRM shall not be liable for any indirect, incidental,
+            special, consequential, or punitive damages arising from your use of the Service. Our total liability shall
+            not exceed the amount paid by you in the 12 months preceding the claim.</p>
+
+        <h2>11. Modifications to Terms</h2>
+        <p>We may update these Terms of Service from time to time. Changes will be posted on this page with an updated
+            effective date. Continued use of the Service after changes constitutes acceptance of the new terms.</p>
+
+        <h2>12. Contact Us</h2>
+        <p>If you have questions about these Terms, please contact us at:</p>
+        <p><strong>Email:</strong> skia@automatedsolutionz.com</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; 2026 Day Care Operation CRM. All rights reserved. Powered by <a href="https://automatedsolutionz.com"
+                target="_blank">Skia Automated Solutions</a>.</p>
+        <p style="margin-top: 6px;"><a href="terms.html">Terms</a> &nbsp;|&nbsp; <a href="privacy.html">Privacy</a>
+            &nbsp;|&nbsp; <a href="pricing.html">Pricing</a></p>
+    </footer>
+</body>
+
+</html>

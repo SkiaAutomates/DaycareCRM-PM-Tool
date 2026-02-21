@@ -10,6 +10,15 @@ const Auth = {
 
     // Check if user is authenticated
     isAuthenticated() {
+        // Handle checkout success message
+        if (window.location.search.includes('checkout=success')) {
+            setTimeout(() => {
+                Utils.showToast('Checkout successful! Your subscription is being processed.', 'success');
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }, 1000);
+        }
+
         const session = localStorage.getItem('dc_session');
         if (session) {
             try {
@@ -38,109 +47,13 @@ const Auth = {
     // Check if current user is Admin or Director
     isAdmin() {
         if (!this.currentUser) return false;
-        // ggskiawp is always admin
-        if (this.currentUser.email === ALLOWED_EMAIL) return true;
-
-        return this.currentUser.role === 'Admin' || this.currentUser.role === 'Director';
+        return this.currentUser.role === 'Admin' || this.currentUser.role === 'Director' || this.currentUser.role === 'owner';
     },
 
     // Sign in with Supabase
     async signIn(email, password) {
-        // Validate email first
-        if (!this.isAllowedEmail(email)) {
-            throw new Error(`Access restricted to ${ALLOWED_EMAIL} only.`);
-        }
-
         try {
-            let isManaged = false;
-            const users = JSON.parse(localStorage.getItem('dc_users') || '[]');
-            const managedUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-
-            // Default Supabase Auth for Main Admin
-            let data = {};
-
-            if (managedUser) {
-                // Simulated login for managed users
-                data = {
-                    user: {
-                        email: email,
-                        id: managedUser.id
-                    },
-                    access_token: 'mock-token-' + Date.now(),
-                    expires_in: 86400
-                };
-            } else {
-                const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error_description || data.msg || 'Sign in failed');
-                }
-            }
-
-            // Store session
-            // Get Role
-            let role = 'Admin';
-            let name = 'Admin';
-            let id = 'local-id';
-
-            if (managedUser) {
-                // EXPIRE CHECK FOR TEMPORARY ACCESS
-                if (managedUser.role === 'Temporary Access' && managedUser.createdAt) {
-                    const created = new Date(managedUser.createdAt);
-                    const expires = new Date(created.getTime() + 120 * 60 * 60 * 1000); // 120 hours
-                    if (new Date() > expires) {
-                        throw new Error("Your temporary access has expired. Please contact us to subscribe.");
-                    }
-                }
-
-                role = managedUser.role;
-                name = managedUser.name;
-                id = managedUser.id;
-            } else {
-                if (email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
-                    role = 'Admin';
-                    name = 'Admin';
-                }
-            }
-
-            const session = {
-                user: {
-                    email: data.user.email || email,
-                    id: data.user.id || id,
-                    role: role,
-                    name: name
-                },
-                accessToken: data.access_token || 'mock-token',
-                expiresAt: new Date(Date.now() + (data.expires_in || 86400) * 1000).toISOString()
-            };
-            localStorage.setItem('dc_session', JSON.stringify(session));
-            this.currentUser = session.user;
-
-            return session.user;
-        } catch (error) {
-            console.error('Sign in error:', error);
-            throw error;
-        }
-    },
-
-    // Sign up with Supabase
-    async signUp(email, password) {
-        // Validate email first
-        if (!this.isAllowedEmail(email)) {
-            throw new Error(`Access restricted to ${ALLOWED_EMAIL} only.`);
-        }
-
-        try {
-            const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+            const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
                 method: 'POST',
                 headers: {
                     'apikey': SUPABASE_ANON_KEY,
@@ -152,10 +65,74 @@ const Auth = {
             const data = await response.json();
 
             if (!response.ok) {
+                throw new Error(data.error_description || data.msg || 'Sign in failed');
+            }
+
+            // Fetch Organization details
+            const orgResponse = await fetch(`${SUPABASE_URL}/rest/v1/organization_members?user_id=eq.${data.user.id}&select=*,organizations(*)`, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${data.access_token}`
+                }
+            });
+            const orgs = await orgResponse.json();
+
+            let organizationId = null;
+            let role = 'Admin'; // Default fallback
+            let orgName = 'My Day Care';
+
+            if (orgs && orgs.length > 0) {
+                organizationId = orgs[0].organization_id;
+                role = orgs[0].role;
+                orgName = orgs[0].organizations.name;
+            }
+
+            const session = {
+                user: {
+                    email: data.user.email,
+                    id: data.user.id,
+                    role: role,
+                    name: data.user.user_metadata?.full_name || email.split('@')[0],
+                    organizationId: organizationId,
+                    orgName: orgName
+                },
+                accessToken: data.access_token,
+                expiresAt: new Date(Date.now() + (data.expires_in || 86400) * 1000).toISOString()
+            };
+
+            localStorage.setItem('dc_session', JSON.stringify(session));
+            this.currentUser = session.user;
+
+            return session.user;
+        } catch (error) {
+            console.error('Sign in error:', error);
+            throw error;
+        }
+    },
+
+    // Sign up with Supabase
+    async signUp(email, password, fullName = '') {
+        try {
+            const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    data: { full_name: fullName }
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
                 throw new Error(data.error_description || data.msg || 'Sign up failed');
             }
 
-            return { success: true, message: 'Account created! You can now sign in.' };
+            return { success: true, message: 'Account created! Please check your email for a verification link, then sign in.' };
         } catch (error) {
             console.error('Sign up error:', error);
             throw error;
@@ -231,7 +208,13 @@ const Auth = {
                 errorDiv.textContent = '';
 
                 await Auth.signIn(email, password);
-                window.location.reload();
+
+                // If user has no organization, show setup
+                if (!Auth.currentUser.organizationId) {
+                    Auth.showOrgSetupScreen();
+                } else {
+                    window.location.reload();
+                }
             } catch (error) {
                 errorDiv.textContent = error.message;
                 btn.disabled = false;
@@ -258,9 +241,14 @@ const Auth = {
                     
                     <form id="signupForm" class="login-form">
                         <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" id="signupName" 
+                                   placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-input" id="signupEmail" 
-                                   placeholder="ggskiawp@gmail.com" required>
+                                   placeholder="email@example.com" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Password</label>
@@ -316,7 +304,8 @@ const Auth = {
                 btn.disabled = true;
                 btn.textContent = 'Creating account...';
 
-                const result = await Auth.signUp(email, password);
+                const fullName = document.getElementById('signupName').value;
+                const result = await Auth.signUp(email, password, fullName);
                 successDiv.textContent = result.message;
                 btn.textContent = 'Account Created';
 
@@ -332,6 +321,94 @@ const Auth = {
         // Add back to login button handler
         document.getElementById('showLoginBtn').addEventListener('click', () => {
             Auth.showLoginScreen();
+        });
+    },
+
+    // Show Organization Setup UI
+    showOrgSetupScreen() {
+        document.body.innerHTML = `
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-logo" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <img src="Daycare Logo.png" alt="Logo" class="logo-image-large" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+                        <h1 style="font-family: 'Quicksand', sans-serif; font-weight: 700; color: var(--primary-700); margin: 0; font-size: 1.8rem;">Setup Your Day Care</h1>
+                        <p class="login-subtitle" style="font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--neutral-600); margin-top: 0;">Tell us about your organization</p>
+                    </div>
+                    
+                    <form id="orgForm" class="login-form">
+                        <div class="form-group">
+                            <label class="form-label">Organization Name</label>
+                            <input type="text" class="form-input" id="orgName" 
+                                   placeholder="e.g. Sunshine Academy" required>
+                        </div>
+                        <div id="orgError" class="login-error"></div>
+                        <button type="submit" class="btn btn-primary btn-block" id="orgBtn">
+                            Finish Setup
+                        </button>
+                    </form>
+                    
+                    <div class="login-divider">
+                        <span>Or</span>
+                    </div>
+
+                    <button class="btn btn-secondary btn-block" id="logoutFromSetupBtn">
+                        Log Out
+                    </button>
+
+                    <p class="login-notice">
+                        🔒 Secure global access enabled
+                    </p>
+                </div>
+            </div>
+        `;
+
+        // Org Form Handler
+        document.getElementById('orgForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('orgName').value;
+            const btn = document.getElementById('orgBtn');
+            const errorDiv = document.getElementById('orgError');
+
+            try {
+                btn.disabled = true;
+                btn.textContent = 'Creating organization...';
+
+                // 1. Create Organization
+                const org = await Supabase.insert('organizations', {
+                    name: name,
+                    owner_id: this.currentUser.id
+                });
+
+                if (!org) throw new Error("Failed to create organization");
+
+                // 2. Add User as Owner
+                await Supabase.insert('organization_members', {
+                    organization_id: org.id,
+                    user_id: this.currentUser.id,
+                    role: 'owner'
+                });
+
+                // Update session
+                const session = JSON.parse(localStorage.getItem('dc_session'));
+                session.user.organizationId = org.id;
+                session.user.orgName = org.name;
+                session.user.role = 'owner';
+                localStorage.setItem('dc_session', JSON.stringify(session));
+
+                this.currentUser = session.user;
+
+                // Done!
+                window.location.reload();
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                btn.disabled = false;
+                btn.textContent = 'Finish Setup';
+            }
+        });
+
+        // Logout from setup handler
+        document.getElementById('logoutFromSetupBtn').addEventListener('click', () => {
+            this.signOut();
         });
     }
 };

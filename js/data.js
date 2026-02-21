@@ -85,7 +85,7 @@ const Data = {
                 }
             });
 
-            // Ensure MB Users key exists
+            // Ensure CRM Users key exists
             if (!localStorage.getItem('dc_users')) {
                 localStorage.setItem('dc_users', JSON.stringify([]));
             }
@@ -521,8 +521,17 @@ const Data = {
     },
 
     _add(key, item) {
+        const session = JSON.parse(localStorage.getItem('dc_session') || '{}');
+        const orgId = session.user?.organizationId;
+
         const items = this._get(key);
         item.id = item.id || Utils.generateId();
+
+        // Inject organization context for multi-tenancy
+        if (orgId && !item.organizationId) {
+            item.organizationId = orgId;
+        }
+
         item.createdAt = new Date().toISOString();
         item.updatedAt = new Date().toISOString();
         items.push(item);

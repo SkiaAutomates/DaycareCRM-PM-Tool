@@ -54,7 +54,7 @@ Real-time updates within the CRM Web App.
 
 ### Tours
 - Completed, Rescheduled, Cancelled, Scheduled this week
-- Source tracking: Yelp, Word of Mouth, MB (Website), BH (Brighthorizon), etc.
+- Source tracking: Yelp, Word of Mouth, CRM Website, BH (Brighthorizon), etc.
 
 ### Service Agreements
 - Sent, Signed, Followed-up counts per location

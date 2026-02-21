@@ -73,7 +73,7 @@
   "scheduledDate": "YYYY-MM-DD",
   "scheduledTime": "HH:MM",
   "status": "Scheduled | Completed | Rescheduled | Cancelled",
-  "source": "Yelp | Word of Mouth | MB | BH | Other",
+  "source": "Yelp | Word of Mouth | CRM Website | BH | Other",
   "notes": "string",
   "createdAt": "ISO 8601"
 }

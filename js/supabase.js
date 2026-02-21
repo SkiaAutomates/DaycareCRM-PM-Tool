@@ -8,19 +8,26 @@ const SUPABASE_ANON_KEY = 'sb_publishable_aVOHN112ofbEt6SPtEcEbg_QY5SIqhi';
 
 // Supabase client using REST API (no npm dependencies needed)
 const Supabase = {
-    headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
+    // Dynamic headers to include Auth token
+    getHeaders() {
+        const session = JSON.parse(localStorage.getItem('dc_session') || '{}');
+        const token = session.accessToken || SUPABASE_ANON_KEY;
+
+        return {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+        };
     },
 
     async request(table, method = 'GET', body = null, query = '') {
         const url = `${SUPABASE_URL}/rest/v1/${table}${query}`;
         const options = {
             method,
-            headers: this.headers
+            headers: this.getHeaders()
         };
+        // ... rest of the method
         if (body) {
             options.body = JSON.stringify(body);
         }

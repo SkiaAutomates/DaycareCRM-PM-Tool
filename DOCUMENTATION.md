@@ -254,7 +254,7 @@ Generate comprehensive weekly summaries including:
 
 1. **Clone Repository**
    ```bash
-   git clone https://github.com/SkiaAutomates/MB-CRM-Report-Web-Base-App.git
+   git clone https://github.com/SkiaAutomates/Day-Care-CRM.git
    ```
 
 2. **Set Up Supabase**
