@@ -412,20 +412,56 @@ const Auth = {
                 btn.disabled = true;
                 btn.textContent = 'Creating organization...';
 
-                // 1. Create Organization
-                const org = await Supabase.insert('organizations', {
-                    name: name,
-                    owner_id: this.currentUser.id
+                // Get access token from session
+                const dcSession = JSON.parse(localStorage.getItem('dc_session') || '{}');
+                const accessToken = dcSession.accessToken || SUPABASE_ANON_KEY;
+
+                // 1. Create Organization (direct fetch with user token)
+                const orgRes = await fetch(`${SUPABASE_URL}/rest/v1/organizations`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        owner_id: this.currentUser.id
+                    })
                 });
 
-                if (!org) throw new Error("Failed to create organization");
+                if (!orgRes.ok) {
+                    const errText = await orgRes.text();
+                    console.error('Org creation failed:', errText);
+                    throw new Error(`Could not create org: ${errText}`);
+                }
 
-                // 2. Add User as Owner
-                await Supabase.insert('organization_members', {
-                    organization_id: org.id,
-                    user_id: this.currentUser.id,
-                    role: 'owner'
+                const orgs = await orgRes.json();
+                const org = orgs && orgs.length > 0 ? orgs[0] : null;
+                if (!org || !org.id) throw new Error("Organization was created but returned no ID");
+
+                // 2. Add User as Owner (direct fetch with user token)
+                const memberRes = await fetch(`${SUPABASE_URL}/rest/v1/organization_members`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        organization_id: org.id,
+                        user_id: this.currentUser.id,
+                        role: 'owner'
+                    })
                 });
+
+                if (!memberRes.ok) {
+                    const errText = await memberRes.text();
+                    console.error('Member creation failed:', errText);
+                    // Don't throw here — org was created, still update session
+                }
 
                 // Update session
                 const session = JSON.parse(localStorage.getItem('dc_session'));
