@@ -67,9 +67,24 @@ const Auth = {
         return this.currentUser.role === 'Admin' || this.currentUser.role === 'Director' || this.currentUser.role === 'owner';
     },
 
+    // Clear all cached CRM data from localStorage (for multi-tenant isolation)
+    clearDataCache() {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('dc_') && key !== 'dc_session') {
+                keysToRemove.push(key);
+            }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+        console.log(`🧹 Cleared ${keysToRemove.length} cached data keys`);
+    },
+
     // Sign in with Supabase
     async signIn(email, password) {
         try {
+            // Clear previous user's cached data before loading new user's data
+            this.clearDataCache();
             const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
                 method: 'POST',
                 headers: {
@@ -180,6 +195,7 @@ const Auth = {
 
     // Sign out
     signOut() {
+        this.clearDataCache();
         localStorage.removeItem('dc_session');
         this.currentUser = null;
         window.location.reload();

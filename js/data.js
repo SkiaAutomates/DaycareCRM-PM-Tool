@@ -57,25 +57,35 @@ const Data = {
         if (this._loadingPromise) return this._loadingPromise;
 
         this._loadingPromise = (async () => {
+            // Determine if this is the admin account
+            const session = JSON.parse(localStorage.getItem('dc_session') || '{}');
+            const isAdmin = session.user?.email === ALLOWED_EMAIL;
+
             // Load Classrooms from local storage or use defaults
             const storedClassrooms = localStorage.getItem('dc_classrooms');
             if (storedClassrooms) {
                 this.CLASSROOMS = JSON.parse(storedClassrooms);
-            } else {
+            } else if (isAdmin) {
+                // Only seed default classrooms for the admin account
                 this.CLASSROOMS = JSON.parse(JSON.stringify(this.CLASSROOMS_DEFAULT));
+            } else {
+                // New client: start with empty classrooms
+                this.CLASSROOMS = [];
             }
 
             // Load Locations
             const storedLocations = localStorage.getItem('dc_locations');
             if (storedLocations) {
                 this.LOCATIONS = JSON.parse(storedLocations);
-            } else {
-                // Initial migration: Derive locations from existing classrooms
+            } else if (isAdmin) {
+                // Only seed default locations for the admin account
                 this.LOCATIONS = [...new Set(this.CLASSROOMS.map(c => c.location))];
-                // Ensure defaults exist if classrooms are empty (edge case)
                 if (!this.LOCATIONS.includes('Day Care Location 1')) this.LOCATIONS.push('Day Care Location 1');
                 if (!this.LOCATIONS.includes('Day Care Location 2')) this.LOCATIONS.push('Day Care Location 2');
                 this.saveLocations();
+            } else {
+                // New client: start with empty locations
+                this.LOCATIONS = [];
             }
 
             // Initialize localStorage for other keys

@@ -76,7 +76,8 @@ const Settings = {
                     </div>
                 </div>
 
-                <!-- System Tools -->
+                <!-- System Tools (Admin Only) -->
+                ${(Auth.isAdmin() || Auth.currentUser?.email === ALLOWED_EMAIL) ? `
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-tools" style="margin-right: 8px; color: var(--neutral-500);"></i>System Tools</span>
@@ -95,7 +96,7 @@ const Settings = {
                     </div>
                 </div>
                 
-                <!-- Danger Zone -->
+                <!-- Danger Zone (Admin Only) -->
                 <div class="card" style="border: 1px dashed var(--error);">
                     <div class="card-header" style="background: #fffafa;">
                         <span class="card-title" style="font-size: 0.9em; color: var(--error);">Danger Zone</span>
@@ -106,6 +107,32 @@ const Settings = {
                         </button>
                     </div>
                 </div>
+                ` : `
+                <!-- Data Import (Clients) -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-file-import" style="margin-right: 8px; color: var(--primary-500);"></i>Import Your Data</span>
+                    </div>
+                    <div class="card-body" style="padding: 20px;">
+                        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; background: linear-gradient(135deg, #f0fdf4, #fff); border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px 20px;">
+                            <div style="background: var(--primary-500); color: white; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3em; flex-shrink: 0;"><i class="fas fa-file-csv"></i></div>
+                            <div style="flex: 1; min-width: 160px;">
+                                <div style="font-weight: 700; color: var(--secondary-800); margin-bottom: 3px;">Import from CSV</div>
+                                <div style="font-size: 0.85em; color: var(--neutral-600); line-height: 1.5;">Upload a CSV file with your existing parent and child data to get started quickly.</div>
+                            </div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button class="btn btn-secondary" onclick="Settings.downloadCSVTemplate()" style="white-space: nowrap;">
+                                    <i class="fas fa-download"></i> Download Template
+                                </button>
+                                <label class="btn btn-primary" style="white-space: nowrap; cursor: pointer; margin: 0;">
+                                    <i class="fas fa-upload"></i> Upload CSV
+                                    <input type="file" accept=".csv" onchange="Settings.importCSV(this.files[0])" style="display: none;">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `}
             </div>
         `;
 
@@ -354,6 +381,182 @@ const Settings = {
 
         Utils.showToast(`Successfully added ${studentsAdded} students and ${studentsAdded * 2} parents!`, 'success');
         setTimeout(() => location.reload(), 1500);
+    },
+
+    // =========================================================================
+    // CSV IMPORT / EXPORT (For New Clients)
+    // =========================================================================
+
+    downloadCSVTemplate() {
+        const headers = [
+            'Child First Name',
+            'Child Last Name',
+            'Date of Birth (YYYY-MM-DD)',
+            'Location',
+            'Classroom',
+            'Schedule (Full Time / Part Time)',
+            'Days of Week (Mon,Tue,Wed,Thu,Fri)',
+            'Enrollment Date (YYYY-MM-DD)',
+            'Parent 1 First Name',
+            'Parent 1 Last Name',
+            'Parent 1 Email',
+            'Parent 1 Phone',
+            'Parent 2 First Name',
+            'Parent 2 Last Name',
+            'Parent 2 Email',
+            'Parent 2 Phone'
+        ];
+
+        // Add 2 example rows
+        const exampleRows = [
+            ['Emma', 'Johnson', '2024-03-15', 'Main Location', 'Toddler Room', 'Full Time', 'Mon,Tue,Wed,Thu,Fri', '2025-09-01', 'Sarah', 'Johnson', 'sarah.j@email.com', '555-123-4567', 'Mike', 'Johnson', 'mike.j@email.com', '555-234-5678'],
+            ['Liam', 'Smith', '2023-11-20', 'Main Location', 'Preschool Room', 'Part Time', 'Mon,Wed,Fri', '2025-08-15', 'Jessica', 'Smith', 'jess.s@email.com', '555-345-6789', '', '', '', '']
+        ];
+
+        const csv = [headers.join(','), ...exampleRows.map(r => r.join(','))].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'daycare_import_template.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+        Utils.showToast('Template downloaded! Fill it in and upload it back.', 'success');
+    },
+
+    async importCSV(file) {
+        if (!file) return;
+
+        if (!file.name.endsWith('.csv')) {
+            Utils.showToast('Please upload a .csv file', 'error');
+            return;
+        }
+
+        try {
+            const text = await file.text();
+            const lines = text.split(/\r?\n/).filter(l => l.trim());
+
+            if (lines.length < 2) {
+                Utils.showToast('CSV file is empty or has no data rows', 'error');
+                return;
+            }
+
+            // Parse header
+            const headers = lines[0].split(',').map(h => h.trim());
+            const dataRows = lines.slice(1);
+
+            if (!confirm(`Found ${dataRows.length} rows to import. Continue?`)) return;
+
+            Utils.showToast(`Importing ${dataRows.length} records...`, 'info');
+
+            let imported = 0;
+            const locations = Data.getLocations();
+            const classrooms = Data.getClassrooms();
+
+            for (const row of dataRows) {
+                // Simple CSV parsing (handles basic cases)
+                const cols = row.split(',').map(c => c.trim());
+
+                const childFirst = cols[0] || '';
+                const childLast = cols[1] || '';
+                const dob = cols[2] || '';
+                const location = cols[3] || (locations[0] || 'Default Location');
+                const classroomName = cols[4] || '';
+                const scheduleType = cols[5] || 'Full Time';
+                const daysOfWeek = cols[6] ? cols[6].split(',').map(d => d.trim()) : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                const enrollmentDate = cols[7] || new Date().toISOString().split('T')[0];
+
+                // Parent 1
+                const p1First = cols[8] || '';
+                const p1Last = cols[9] || '';
+                const p1Email = cols[10] || '';
+                const p1Phone = cols[11] || '';
+
+                // Parent 2
+                const p2First = cols[12] || '';
+                const p2Last = cols[13] || '';
+                const p2Email = cols[14] || '';
+                const p2Phone = cols[15] || '';
+
+                if (!childFirst || !childLast) continue; // Skip empty rows
+
+                // Ensure location exists
+                if (!locations.includes(location)) {
+                    Data.addLocation(location);
+                    locations.push(location);
+                }
+
+                // Find or create classroom
+                let classroom = classrooms.find(c => c.name === classroomName && c.location === location);
+                if (!classroom && classroomName) {
+                    classroom = Data.addClassroom({
+                        name: classroomName,
+                        location: location,
+                        ageCategory: 'General',
+                        ageRangeMonths: { min: 0, max: 72 },
+                        maxCapacity: 20
+                    });
+                    classrooms.push(classroom);
+                }
+
+                // Create parents
+                const parentIds = [];
+                if (p1First) {
+                    const p1 = Data.addParent({
+                        firstName: p1First,
+                        lastName: p1Last,
+                        email: p1Email,
+                        phone: p1Phone,
+                        status: 'On Process'
+                    });
+                    parentIds.push(p1.id);
+                }
+                if (p2First) {
+                    const p2 = Data.addParent({
+                        firstName: p2First,
+                        lastName: p2Last,
+                        email: p2Email,
+                        phone: p2Phone,
+                        status: 'On Process'
+                    });
+                    parentIds.push(p2.id);
+                }
+
+                // Create child
+                const child = Data.addChild({
+                    firstName: childFirst,
+                    lastName: childLast,
+                    birthDate: dob,
+                    location: location,
+                    classroomId: classroom ? classroom.id : null,
+                    status: 'Enrolled',
+                    scheduleType: scheduleType === 'Part Time' ? 'Part Time' : 'Full Time',
+                    daysOfWeek: daysOfWeek,
+                    enrollmentDate: enrollmentDate,
+                    parentIds: parentIds,
+                    isElfa: false
+                });
+
+                // Link parents to child
+                parentIds.forEach(pid => {
+                    const parent = Data.getParentById(pid);
+                    if (parent) {
+                        const childIds = parent.childIds || [];
+                        childIds.push(child.id);
+                        Data.updateParent(pid, { childIds, status: 'Enrolled' });
+                    }
+                });
+
+                imported++;
+            }
+
+            Utils.showToast(`Successfully imported ${imported} children!`, 'success');
+            setTimeout(() => location.reload(), 1500);
+
+        } catch (err) {
+            console.error('CSV Import error:', err);
+            Utils.showToast(`Import failed: ${err.message}`, 'error');
+        }
     },
 
     getRoleBadgeClass(role) {
