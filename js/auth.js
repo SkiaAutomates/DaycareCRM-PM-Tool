@@ -26,6 +26,23 @@ const Auth = {
                 // Check if session is still valid (24 hour expiry)
                 if (parsed.expiresAt && new Date(parsed.expiresAt) > new Date()) {
                     this.currentUser = parsed.user;
+
+                    // --- TRIAL ORG CHECK --- //
+                    if (this.currentUser && this.currentUser.organizationId && this.currentUser.role !== 'Temporary Access') {
+                        if (this.currentUser.subscriptionStatus !== 'active' && this.currentUser.orgCreatedAt) {
+                            const created = new Date(this.currentUser.orgCreatedAt);
+                            const now = new Date();
+                            const diffHours = (now - created) / (1000 * 60 * 60);
+
+                            if (diffHours >= 120) {
+                                // 5 days (120 hours) expired
+                                this.showTrialExpiredScreen();
+                                return false; // Block access to main app
+                            }
+                        }
+                    }
+                    // --- END TRIAL ORG CHECK --- //
+
                     return true;
                 }
             } catch (e) {
@@ -80,11 +97,28 @@ const Auth = {
             let organizationId = null;
             let role = 'Admin'; // Default fallback
             let orgName = 'My Day Care';
+            let orgCreatedAt = null;
+            let subStatus = null;
 
             if (orgs && orgs.length > 0) {
                 organizationId = orgs[0].organization_id;
                 role = orgs[0].role;
                 orgName = orgs[0].organizations.name;
+                orgCreatedAt = orgs[0].organizations.created_at;
+
+                // Fetch Subscription
+                try {
+                    const subRes = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions?organization_id=eq.${organizationId}&select=*`, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${data.access_token}`
+                        }
+                    });
+                    const subs = await subRes.json();
+                    if (subs && subs.length > 0) {
+                        subStatus = subs[0].status;
+                    }
+                } catch (e) { console.error("Error fetching sub:", e); }
             }
 
             const session = {
@@ -94,7 +128,9 @@ const Auth = {
                     role: role,
                     name: data.user.user_metadata?.full_name || email.split('@')[0],
                     organizationId: organizationId,
-                    orgName: orgName
+                    orgName: orgName,
+                    orgCreatedAt: orgCreatedAt,
+                    subscriptionStatus: subStatus
                 },
                 accessToken: data.access_token,
                 expiresAt: new Date(Date.now() + (data.expires_in || 86400) * 1000).toISOString()
@@ -393,6 +429,7 @@ const Auth = {
                 session.user.organizationId = org.id;
                 session.user.orgName = org.name;
                 session.user.role = 'owner';
+                session.user.orgCreatedAt = org.created_at || new Date().toISOString();
                 localStorage.setItem('dc_session', JSON.stringify(session));
 
                 this.currentUser = session.user;
@@ -410,5 +447,40 @@ const Auth = {
         document.getElementById('logoutFromSetupBtn').addEventListener('click', () => {
             this.signOut();
         });
+    },
+
+    // Show Trial Expired UI
+    showTrialExpiredScreen() {
+        document.body.innerHTML = `
+            <div class="login-container">
+                <div class="login-card" style="max-width: 500px; text-align: center;">
+                    <div class="login-logo" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <div style="font-size: 4rem; color: #ef4444; margin-bottom: 10px;">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h1 style="font-family: 'Quicksand', sans-serif; font-weight: 800; color: var(--text-dark); margin: 0; font-size: 2rem;">Trial Expired</h1>
+                        <p style="font-family: 'Nunito', sans-serif; font-size: 1.1rem; color: var(--text-mid); margin-top: 10px; line-height: 1.6;">
+                            Your 5-day free trial for <strong>${this.currentUser.orgName || 'your organization'}</strong> has ended. We hope you enjoyed exploring the Day Care CRM platform!
+                        </p>
+                        <p style="font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--text-mid); margin-top: 5px;">
+                            To regain complete access to your data, locations, and tools, please select a subscription plan.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px;">
+                        <button onclick="window.location.href='pricing.html'" class="btn btn-primary btn-block" style="padding: 14px; font-size: 1.1rem;">
+                            View Pricing & Subscribe
+                        </button>
+                        <button onclick="Auth.signOut()" class="btn btn-secondary btn-block">
+                            Log Out
+                        </button>
+                    </div>
+
+                    <p class="login-notice" style="margin-top: 20px;">
+                        🔒 All your data is safely saved and will be restored instantly upon subscription.
+                    </p>
+                </div>
+            </div>
+        `;
     }
 };
