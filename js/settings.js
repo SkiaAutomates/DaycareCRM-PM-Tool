@@ -402,6 +402,16 @@ const Settings = {
     },
 
     saveUser() {
+        // --- PLAN LIMIT CHECK --- //
+        const currentUsers = Data.getUsers();
+        // Don't count the owner/admin themselves
+        const staffCount = currentUsers.filter(u => u.role !== 'Temporary Access').length;
+        if (!PlanGate.canAddUser(staffCount)) {
+            PlanGate.showLimitReached('Staff Users', PlanGate.getLimits().maxStaffUsers);
+            return;
+        }
+        // --- END PLAN LIMIT CHECK --- //
+
         const form = document.getElementById('addUserForm');
         if (!form.checkValidity()) {
             form.reportValidity();
@@ -552,6 +562,14 @@ const Settings = {
     },
 
     saveLocation() {
+        // --- PLAN LIMIT CHECK --- //
+        const currentLocationCount = Data.getLocations().length;
+        if (!PlanGate.canAddLocation(currentLocationCount)) {
+            PlanGate.showLimitReached('Locations', PlanGate.getLimits().maxLocations);
+            return;
+        }
+        // --- END PLAN LIMIT CHECK --- //
+
         const form = document.getElementById('addLocationForm');
         if (!form.checkValidity()) {
             form.reportValidity();
@@ -730,6 +748,19 @@ const Settings = {
     },
 
     saveClassroom() {
+        // --- PLAN LIMIT CHECK --- //
+        const allClassrooms = Data.getClassrooms ? Data.getClassrooms() : [];
+        const totalClassrooms = Array.isArray(allClassrooms) ? allClassrooms.length :
+            Data.getLocations().reduce((sum, loc) => {
+                const classrooms = Data.getClassroomsForLocation ? Data.getClassroomsForLocation(loc) : [];
+                return sum + classrooms.length;
+            }, 0);
+        if (!PlanGate.canAddClassroom(totalClassrooms)) {
+            PlanGate.showLimitReached('Classrooms', PlanGate.getLimits().maxClassrooms);
+            return;
+        }
+        // --- END PLAN LIMIT CHECK --- //
+
         const form = document.getElementById('addClassroomForm');
         if (!form.checkValidity()) {
             form.reportValidity();

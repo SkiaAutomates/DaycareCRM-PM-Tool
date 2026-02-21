@@ -22,6 +22,7 @@ const App = {
             this.setupNavigation();
             this.setupModal();
             this.setupModal();
+            this.markLockedTabs(); // Show lock icons on gated tabs
             // this.setupImportButton(); // Removed for production
             this.updateCurrentDate();
             // this.render();      // Removed as it is not a function in this version
@@ -81,6 +82,26 @@ const App = {
     },
 
     switchTab(tabName) {
+        // --- FEATURE GATING: Check if this tab is allowed --- //
+        const tabFeatureMap = {
+            'reports': 'reportsSuite',
+            'notifications': 'smartNotifications',
+            'availability': 'availabilityForecasting'
+        };
+
+        const requiredFeature = tabFeatureMap[tabName];
+        if (requiredFeature && !PlanGate.hasFeature(requiredFeature)) {
+            // Map feature keys to user-friendly names
+            const featureNames = {
+                'reportsSuite': 'Reports Suite',
+                'smartNotifications': 'Smart Notifications & Alerts',
+                'availabilityForecasting': 'Availability Forecasting'
+            };
+            PlanGate.showUpgradePrompt(featureNames[requiredFeature] || tabName);
+            return; // Don't switch to the tab
+        }
+        // --- END FEATURE GATING --- //
+
         // Update nav items
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.toggle('active', item.dataset.tab === tabName);
@@ -208,6 +229,29 @@ const App = {
     },
 
     // Import button removed for production
+
+    // Mark locked sidebar tabs with a lock icon
+    markLockedTabs() {
+        const tabFeatureMap = {
+            'reports': 'reportsSuite',
+            'notifications': 'smartNotifications',
+            'availability': 'availabilityForecasting'
+        };
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const tab = item.dataset.tab;
+            const requiredFeature = tabFeatureMap[tab];
+            if (requiredFeature && !PlanGate.hasFeature(requiredFeature)) {
+                // Add a lock icon
+                const lockBadge = document.createElement('span');
+                lockBadge.textContent = '🔒';
+                lockBadge.style.cssText = 'font-size: 0.7em; margin-left: auto; opacity: 0.6;';
+                lockBadge.title = `Upgrade to unlock ${tab}`;
+                item.appendChild(lockBadge);
+                item.style.opacity = '0.6';
+            }
+        });
+    },
 
     // Refresh current tab
     refresh() {

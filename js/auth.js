@@ -99,6 +99,7 @@ const Auth = {
             let orgName = 'My Day Care';
             let orgCreatedAt = null;
             let subStatus = null;
+            let planTier = 'starter'; // Default to starter
 
             if (orgs && orgs.length > 0) {
                 organizationId = orgs[0].organization_id;
@@ -117,6 +118,7 @@ const Auth = {
                     const subs = await subRes.json();
                     if (subs && subs.length > 0) {
                         subStatus = subs[0].status;
+                        planTier = subs[0].plan_tier || 'starter';
                     }
                 } catch (e) { console.error("Error fetching sub:", e); }
             }
@@ -130,7 +132,8 @@ const Auth = {
                     organizationId: organizationId,
                     orgName: orgName,
                     orgCreatedAt: orgCreatedAt,
-                    subscriptionStatus: subStatus
+                    subscriptionStatus: subStatus,
+                    planTier: planTier
                 },
                 accessToken: data.access_token,
                 expiresAt: new Date(Date.now() + (data.expires_in || 86400) * 1000).toISOString()
