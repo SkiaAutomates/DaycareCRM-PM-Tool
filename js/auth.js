@@ -416,54 +416,29 @@ const Auth = {
                 const dcSession = JSON.parse(localStorage.getItem('dc_session') || '{}');
                 const accessToken = dcSession.accessToken || SUPABASE_ANON_KEY;
 
-                // 1. Create Organization (direct fetch with user token)
-                const orgRes = await fetch(`${SUPABASE_URL}/rest/v1/organizations`, {
+                // Call the SECURITY DEFINER RPC function (bypasses RLS)
+                const rpcRes = await fetch(`${SUPABASE_URL}/rest/v1/rpc/create_organization`, {
                     method: 'POST',
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=representation'
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        name: name,
-                        owner_id: this.currentUser.id
-                    })
+                    body: JSON.stringify({ org_name: name })
                 });
 
-                if (!orgRes.ok) {
-                    const errText = await orgRes.text();
-                    console.error('Org creation failed:', errText);
+                if (!rpcRes.ok) {
+                    const errText = await rpcRes.text();
+                    console.error('RPC create_organization failed:', errText);
                     throw new Error(`Could not create org: ${errText}`);
                 }
 
-                const orgs = await orgRes.json();
-                const org = orgs && orgs.length > 0 ? orgs[0] : null;
-                if (!org || !org.id) throw new Error("Organization was created but returned no ID");
+                const org = await rpcRes.json();
+                console.log('Org created via RPC:', org);
 
-                // 2. Add User as Owner (direct fetch with user token)
-                const memberRes = await fetch(`${SUPABASE_URL}/rest/v1/organization_members`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=representation'
-                    },
-                    body: JSON.stringify({
-                        organization_id: org.id,
-                        user_id: this.currentUser.id,
-                        role: 'owner'
-                    })
-                });
+                if (!org || !org.id) throw new Error("Organization was created but returned no ID.");
 
-                if (!memberRes.ok) {
-                    const errText = await memberRes.text();
-                    console.error('Member creation failed:', errText);
-                    // Don't throw here — org was created, still update session
-                }
-
-                // Update session
+                // Update session with org info
                 const session = JSON.parse(localStorage.getItem('dc_session'));
                 session.user.organizationId = org.id;
                 session.user.orgName = org.name;
