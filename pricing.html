@@ -981,11 +981,10 @@
     <!-- Paddle.js Setup -->
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script type="text/javascript">
-        // Paddle Sandbox for testing
-        // Note: Replace with your actual client-side token from Paddle Dashboard
+        // Paddle Live Production Integration
         Paddle.Initialize({
-            token: 'test_ae9356784d59f7b4943f7a4d59f', // Sandbox Token Placeholder
-            environment: 'sandbox'
+            token: 'live_e3221c79c226e300d0fb8202bb0',
+            environment: 'production'
         });
 
         function handlePlanSelection(planName, paddlePriceId) {
