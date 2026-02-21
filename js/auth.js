@@ -252,7 +252,14 @@ const Auth = {
                 if (!Auth.currentUser.organizationId) {
                     Auth.showOrgSetupScreen();
                 } else {
-                    window.location.reload();
+                    // Check if we came from a pricing page click
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const plan = urlParams.get('plan');
+                    if (plan) {
+                        window.location.href = `pricing.html?plan=${plan}`;
+                    } else {
+                        window.location.reload();
+                    }
                 }
             } catch (error) {
                 errorDiv.textContent = error.message;
@@ -269,6 +276,9 @@ const Auth = {
 
     // Show signup UI
     showSignupScreen() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan') || '';
+
         document.body.innerHTML = `
             <div class="login-container">
                 <div class="login-card">
@@ -279,6 +289,7 @@ const Auth = {
                     </div>
                     
                     <form id="signupForm" class="login-form">
+                        <input type="hidden" id="signupTargetPlan" value="${plan}">
                         <div class="form-group">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-input" id="signupName" 
@@ -448,8 +459,16 @@ const Auth = {
 
                 this.currentUser = session.user;
 
-                // Done!
-                window.location.reload();
+                // Check if they were flowing from a pricing plan signup
+                const urlParams = new URLSearchParams(window.location.search);
+                const plan = urlParams.get('plan');
+
+                if (plan) {
+                    window.location.href = `pricing.html?plan=${plan}`;
+                } else {
+                    // Done!
+                    window.location.reload();
+                }
             } catch (error) {
                 errorDiv.textContent = error.message;
                 btn.disabled = false;

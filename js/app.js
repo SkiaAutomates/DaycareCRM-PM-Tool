@@ -8,9 +8,14 @@ const App = {
 
     async init() {
         document.title = "Day Care Operation | CRM";
-        // Mobile Togglentication first
+        // Check authentication first
         if (!Auth.isAuthenticated()) {
-            Auth.showLoginScreen();
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'signup') {
+                Auth.showSignupScreen();
+            } else {
+                Auth.showLoginScreen();
+            }
             return;
         }
 

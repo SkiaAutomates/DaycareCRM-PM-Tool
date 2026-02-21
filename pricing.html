@@ -1022,6 +1022,34 @@
                 }
             });
         }
+
+        // Auto-open checkout if coming back from signup flow
+        document.addEventListener('DOMContentLoaded', () => {
+            const session = JSON.parse(localStorage.getItem('dc_session') || '{}');
+            const user = session.user;
+
+            if (user && user.id) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const requestedPlan = urlParams.get('plan');
+
+                if (requestedPlan) {
+                    const priceMap = {
+                        'starter': 'pri_01kj0gdb05yv5876agkddzp94x',
+                        'professional': 'pro_01kj0gednx6t66xzzagp4c1j36',
+                        'growth': 'pri_01kj0grj9rkwa0s32weqqv13e1'
+                    };
+
+                    const priceId = priceMap[requestedPlan];
+                    if (priceId) {
+                        // Small delay to ensure Paddle is ready
+                        setTimeout(() => handlePlanSelection(requestedPlan, priceId), 500);
+
+                        // Clean the URL so it doesn't reopen on refresh
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                }
+            }
+        });
     </script>
 </body>
 
