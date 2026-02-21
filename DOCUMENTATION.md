@@ -155,7 +155,7 @@ Generate comprehensive weekly summaries including:
 
 1. Navigate to [https://daycare-crm-pm-tool.vercel.app](https://daycare-crm-pm-tool.vercel.app)
 2. Click **Create Account**
-3. Enter your `@meaningfulbeginnings.org` email
+3. Enter your admin email (e.g. `ggskiawp@gmail.com`)
 4. Create a password (minimum 6 characters)
 5. Check your email for verification link
 6. Click link to verify, then sign in
